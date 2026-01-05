@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Okul Not Girişi Aracı</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .toolbar {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding-right: 15px;
+            border-right: 1px solid #ddd;
+        }
+
+        .toolbar-group:last-child {
+            border-right: none;
+        }
+
+        .toolbar label {
+            font-size: 13px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .toolbar input, .toolbar select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .toolbar input:focus, .toolbar select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .main-content {
+            padding: 25px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        th.sortable {
+            cursor: pointer;
+        }
+
+        th.sortable:hover {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f8f9ff;
+        }
+
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        tr:nth-child(even):hover {
+            background: #f0f4ff;
+        }
+
+        .student-number {
+            width: 60px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .student-name {
+            text-align: left;
+            padding-left: 15px;
+            min-width: 180px;
+        }
+
+        .grade-input {
+            width: 55px;
+            padding: 8px 4px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .grade-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            background: #f8f9ff;
+        }
+
+        .grade-input.valid {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .grade-input.invalid {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .grade-input.empty {
+            background: #fff9e6;
+            border-color: #ffc107;
+        }
+
+        .average-cell {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .average-5 { color: #28a745; }
+        .average-4 { color: #20c997; }
+        .average-3 { color: #ffc107; }
+        .average-2 { color: #fd7e14; }
+        .average-1 { color: #dc3545; }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+
+        .stat-card.highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .actions-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .action-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .action-card h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .action-card p {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .copy-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .copy-status.show {
+            transform: translateX(0);
+        }
+
+        .copy-status.success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .copy-status.error {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .paste-area {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 13px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .paste-area:focus {
+            outline: none;
+            border-color: #764ba2;
+            background: #f8f9ff;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .help-section {
+            margin-bottom: 20px;
+        }
+
+        .help-section h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .help-section ul {
+            padding-left: 20px;
+        }
+
+        .help-section li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .keyboard-shortcut {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 0 3px;
+        }
+
+        @media (max-width: 768px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .toolbar-group {
+                border-right: none;
+                padding-right: 0;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+
+        .tab-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 13px;
+            z-index: 100;
+        }
+
+        .exam-type-selector {
+            display: flex;
+            gap: 5px;
+        }
+
+        .exam-type-btn {
+            padding: 6px 12px;
+            border: 1px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .exam-type-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .exam-type-btn:hover:not(.active) {
+            background: #f0f4ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>E-Okul Not Girişi Aracı</h1>
+            <p>Hızlı ve kolay not girişi - Tab ile geçiş, otomatik hesaplama, e-okul'a kopyalama</p>
+        </div>
+
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <label>Öğrenci Sayısı:</label>
+                <input type="number" id="studentCount" value="30" min="1" max="50" style="width: 70px;">
+                <button class="btn btn-primary" onclick="generateTable()">Tablo Oluştur</button>
+            </div>
+
+            <div class="toolbar-group">
+                <label>Sınav Sayısı:</label>
+                <select id="examCount" onchange="generateTable()">
+                    <option value="1">1 Sınav</option>
+                    <option value="2" selected>2 Sınav</option>
+                    <option value="3">3 Sınav</option>
+                </select>
+            </div>
+
+            <div class="toolbar-group">
+                <label>Performans:</label>
+                <select id="perfCount" onchange="generateTable()">
+                    <option value="0">Yok</option>
+                    <option value="1">1 Performans</option>
+                    <option value="2" selected>2 Performans</option>
+                    <option value="3">3 Performans</option>
+                </select>
+            </div>
+
+            <div class="toolbar-group">
+                <label>Proje:</label>
+                <select id="projectCount" onchange="generateTable()">
+                    <option value="0" selected>Yok</option>
+                    <option value="1">1 Proje</option>
+                </select>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="btn btn-info" onclick="showImportModal()">📥 Excel'den Al</button>
+                <button class="btn btn-success" onclick="showHelpModal()">❓ Yardım</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="stats-panel" id="statsPanel">
+                <div class="stat-card highlight">
+                    <span class="stat-value" id="statTotal">0</span>
+                    <span class="stat-label">Toplam Öğrenci</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="statEntered">0</span>
+                    <span class="stat-label">Not Girilmiş</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="statEmpty">0</span>
+                    <span class="stat-label">Boş Kalan</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="statAverage">-</span>
+                    <span class="stat-label">Sınıf Ortalaması</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="statPass">0</span>
+                    <span class="stat-label">Geçen (%)</span>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <span>📝 Not Giriş Tablosu</span>
+                <div>
+                    <button class="btn btn-secondary" onclick="clearAllGrades()">🗑️ Temizle</button>
+                    <button class="btn btn-warning" onclick="fillRandomGrades()">🎲 Rastgele Doldur</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="gradeTable">
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="actions-panel">
+                <h3 style="margin-bottom: 15px; color: #333;">📤 E-Okul'a Aktar</h3>
+                <div class="actions-grid">
+                    <div class="action-card">
+                        <h4>1. Yazılı Notları</h4>
+                        <p>Sadece sınav notlarını kopyalar</p>
+                        <button class="btn btn-primary" onclick="copyExamGrades()">Kopyala</button>
+                    </div>
+                    <div class="action-card">
+                        <h4>2. Performans Notları</h4>
+                        <p>Sadece performans notlarını kopyalar</p>
+                        <button class="btn btn-primary" onclick="copyPerfGrades()">Kopyala</button>
+                    </div>
+                    <div class="action-card">
+                        <h4>3. Proje Notları</h4>
+                        <p>Sadece proje notlarını kopyalar</p>
+                        <button class="btn btn-primary" onclick="copyProjectGrades()">Kopyala</button>
+                    </div>
+                    <div class="action-card">
+                        <h4>4. Tüm Notlar</h4>
+                        <p>Tüm notları tek seferde kopyalar</p>
+                        <button class="btn btn-success" onclick="copyAllGrades()">Tümünü Kopyala</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <strong>💡 Kullanım:</strong> Kopyaladıktan sonra e-okul'da ilk not kutusuna tıklayın ve <kbd>Ctrl+V</kbd> ile yapıştırın. Notlar otomatik olarak sırayla yerleşecektir.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-status" id="copyStatus"></div>
+
+    <div class="tab-hint">💡 Tab ile sonraki hücreye, Shift+Tab ile önceki hücreye geçin | Enter ile aşağı inin</div>
+
+    <!-- Import Modal -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📥 Excel'den Öğrenci Listesi Al</h3>
+                <button class="close-btn" onclick="closeImportModal()">&times;</button>
+            </div>
+            <p style="margin-bottom: 15px; color: #666;">Excel'den kopyaladığınız öğrenci listesini aşağıya yapıştırın. Her satırda "Numara [Tab] Ad Soyad" formatında olmalıdır.</p>
+            <textarea class="paste-area" id="importArea" placeholder="Örnek:
+1	Ali Yılmaz
+2	Ayşe Demir
+3	Mehmet Kaya
+...
+
+Excel'den kopyalayıp buraya yapıştırın..."></textarea>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="importStudents()">İçe Aktar</button>
+                <button class="btn btn-secondary" onclick="closeImportModal()">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>❓ Kullanım Kılavuzu</h3>
+                <button class="close-btn" onclick="closeHelpModal()">&times;</button>
+            </div>
+
+            <div class="help-section">
+                <h4>⌨️ Klavye Kısayolları</h4>
+                <ul>
+                    <li><span class="keyboard-shortcut">Tab</span> Sonraki hücreye geç</li>
+                    <li><span class="keyboard-shortcut">Shift + Tab</span> Önceki hücreye geç</li>
+                    <li><span class="keyboard-shortcut">Enter</span> Aşağı hücreye geç</li>
+                    <li><span class="keyboard-shortcut">↑ ↓ ← →</span> Ok tuşları ile gezin</li>
+                    <li><span class="keyboard-shortcut">Ctrl + C</span> Seçili alanı kopyala</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4>📝 Not Girişi</h4>
+                <ul>
+                    <li>Notlar 0-100 arasında olmalıdır</li>
+                    <li>Boş bırakılan notlar sarı renkte görünür</li>
+                    <li>Geçersiz notlar kırmızı renkte görünür</li>
+                    <li>Ortalama otomatik hesaplanır</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4>📤 E-Okul'a Aktarma</h4>
+                <ul>
+                    <li>İstediğiniz not türünü "Kopyala" butonuyla kopyalayın</li>
+                    <li>E-okul'da ilgili not girişi sayfasını açın</li>
+                    <li>İlk öğrencinin not kutusuna tıklayın</li>
+                    <li><span class="keyboard-shortcut">Ctrl + V</span> ile yapıştırın</li>
+                    <li>Notlar otomatik olarak Tab ile sıralanacaktır</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4>📥 Excel'den Alma</h4>
+                <ul>
+                    <li>Excel'de öğrenci numarası ve adı sütunlarını seçin</li>
+                    <li><span class="keyboard-shortcut">Ctrl + C</span> ile kopyalayın</li>
+                    <li>"Excel'den Al" butonuna tıklayın</li>
+                    <li>Açılan alana yapıştırın ve "İçe Aktar"a tıklayın</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let students = [];
+        let examCount = 2;
+        let perfCount = 2;
+        let projectCount = 0;
+
+        // Sayfa yüklendiğinde tablo oluştur
+        document.addEventListener('DOMContentLoaded', function() {
+            generateTable();
+        });
+
+        function generateTable() {
+            const studentCount = parseInt(document.getElementById('studentCount').value) || 30;
+            examCount = parseInt(document.getElementById('examCount').value);
+            perfCount = parseInt(document.getElementById('perfCount').value);
+            projectCount = parseInt(document.getElementById('projectCount').value);
+
+            // Öğrenci listesi oluştur (eğer boşsa)
+            if (students.length === 0 || students.length !== studentCount) {
+                students = [];
+                for (let i = 1; i <= studentCount; i++) {
+                    students.push({
+                        no: i,
+                        name: `Öğrenci ${i}`,
+                        exams: new Array(examCount).fill(''),
+                        perfs: new Array(perfCount).fill(''),
+                        projects: new Array(projectCount).fill('')
+                    });
+                }
+            }
+
+            renderTable();
+            updateStats();
+        }
+
+        function renderTable() {
+            const thead = document.getElementById('tableHead');
+            const tbody = document.getElementById('tableBody');
+
+            // Header oluştur
+            let headerHTML = '<tr><th style="width:60px">No</th><th style="text-align:left; padding-left:15px;">Öğrenci Adı</th>';
+
+            for (let i = 1; i <= examCount; i++) {
+                headerHTML += `<th>Yazılı ${i}</th>`;
+            }
+            for (let i = 1; i <= perfCount; i++) {
+                headerHTML += `<th>Perf. ${i}</th>`;
+            }
+            for (let i = 1; i <= projectCount; i++) {
+                headerHTML += `<th>Proje ${i}</th>`;
+            }
+            headerHTML += '<th>Ortalama</th></tr>';
+            thead.innerHTML = headerHTML;
+
+            // Body oluştur
+            let bodyHTML = '';
+            students.forEach((student, idx) => {
+                bodyHTML += `<tr>
+                    <td class="student-number">${student.no}</td>
+                    <td class="student-name">
+                        <input type="text" value="${student.name}"
+                               onchange="updateStudentName(${idx}, this.value)"
+                               style="width:100%; border:none; background:transparent; padding:5px;">
+                    </td>`;
+
+                // Sınav notları
+                for (let i = 0; i < examCount; i++) {
+                    const value = student.exams[i] || '';
+                    const className = getInputClass(value);
+                    bodyHTML += `<td>
+                        <input type="text" class="grade-input ${className}"
+                               value="${value}"
+                               data-student="${idx}" data-type="exam" data-index="${i}"
+                               onchange="updateGrade(${idx}, 'exam', ${i}, this.value)"
+                               onkeydown="handleKeydown(event, this)"
+                               onfocus="this.select()">
+                    </td>`;
+                }
+
+                // Performans notları
+                for (let i = 0; i < perfCount; i++) {
+                    const value = student.perfs[i] || '';
+                    const className = getInputClass(value);
+                    bodyHTML += `<td>
+                        <input type="text" class="grade-input ${className}"
+                               value="${value}"
+                               data-student="${idx}" data-type="perf" data-index="${i}"
+                               onchange="updateGrade(${idx}, 'perf', ${i}, this.value)"
+                               onkeydown="handleKeydown(event, this)"
+                               onfocus="this.select()">
+                    </td>`;
+                }
+
+                // Proje notları
+                for (let i = 0; i < projectCount; i++) {
+                    const value = student.projects[i] || '';
+                    const className = getInputClass(value);
+                    bodyHTML += `<td>
+                        <input type="text" class="grade-input ${className}"
+                               value="${value}"
+                               data-student="${idx}" data-type="project" data-index="${i}"
+                               onchange="updateGrade(${idx}, 'project', ${i}, this.value)"
+                               onkeydown="handleKeydown(event, this)"
+                               onfocus="this.select()">
+                    </td>`;
+                }
+
+                // Ortalama
+                const avg = calculateStudentAverage(student);
+                const avgClass = getAverageClass(avg);
+                bodyHTML += `<td class="average-cell ${avgClass}">${avg !== null ? avg.toFixed(1) : '-'}</td></tr>`;
+            });
+
+            tbody.innerHTML = bodyHTML;
+        }
+
+        function getInputClass(value) {
+            if (value === '') return 'empty';
+            const num = parseFloat(value);
+            if (isNaN(num) || num < 0 || num > 100) return 'invalid';
+            return 'valid';
+        }
+
+        function getAverageClass(avg) {
+            if (avg === null) return '';
+            if (avg >= 85) return 'average-5';
+            if (avg >= 70) return 'average-4';
+            if (avg >= 55) return 'average-3';
+            if (avg >= 45) return 'average-2';
+            return 'average-1';
+        }
+
+        function updateStudentName(idx, name) {
+            students[idx].name = name;
+        }
+
+        function updateGrade(studentIdx, type, gradeIdx, value) {
+            // Değeri temizle
+            value = value.trim();
+
+            // Sadece sayı olmalı
+            if (value !== '') {
+                const num = parseFloat(value);
+                if (!isNaN(num) && num >= 0 && num <= 100) {
+                    value = Math.round(num).toString();
+                }
+            }
+
+            // Kaydet
+            if (type === 'exam') {
+                students[studentIdx].exams[gradeIdx] = value;
+            } else if (type === 'perf') {
+                students[studentIdx].perfs[gradeIdx] = value;
+            } else if (type === 'project') {
+                students[studentIdx].projects[gradeIdx] = value;
+            }
+
+            // Tabloyu güncelle
+            renderTable();
+            updateStats();
+        }
+
+        function handleKeydown(event, input) {
+            const allInputs = Array.from(document.querySelectorAll('.grade-input'));
+            const currentIndex = allInputs.indexOf(input);
+            const colCount = examCount + perfCount + projectCount;
+
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                // Aşağıdaki hücreye git
+                const nextIndex = currentIndex + colCount;
+                if (nextIndex < allInputs.length) {
+                    allInputs[nextIndex].focus();
+                }
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                const nextIndex = currentIndex + colCount;
+                if (nextIndex < allInputs.length) {
+                    allInputs[nextIndex].focus();
+                }
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                const prevIndex = currentIndex - colCount;
+                if (prevIndex >= 0) {
+                    allInputs[prevIndex].focus();
+                }
+            } else if (event.key === 'ArrowRight' && input.selectionStart === input.value.length) {
+                event.preventDefault();
+                if (currentIndex + 1 < allInputs.length) {
+                    allInputs[currentIndex + 1].focus();
+                }
+            } else if (event.key === 'ArrowLeft' && input.selectionStart === 0) {
+                event.preventDefault();
+                if (currentIndex - 1 >= 0) {
+                    allInputs[currentIndex - 1].focus();
+                }
+            }
+        }
+
+        function calculateStudentAverage(student) {
+            let allGrades = [];
+
+            student.exams.forEach(g => {
+                if (g !== '' && !isNaN(parseFloat(g))) {
+                    allGrades.push(parseFloat(g));
+                }
+            });
+
+            student.perfs.forEach(g => {
+                if (g !== '' && !isNaN(parseFloat(g))) {
+                    allGrades.push(parseFloat(g));
+                }
+            });
+
+            student.projects.forEach(g => {
+                if (g !== '' && !isNaN(parseFloat(g))) {
+                    allGrades.push(parseFloat(g));
+                }
+            });
+
+            if (allGrades.length === 0) return null;
+
+            return allGrades.reduce((a, b) => a + b, 0) / allGrades.length;
+        }
+
+        function updateStats() {
+            const total = students.length;
+            let entered = 0;
+            let empty = 0;
+            let totalAvg = 0;
+            let avgCount = 0;
+            let passCount = 0;
+
+            students.forEach(student => {
+                const allGrades = [...student.exams, ...student.perfs, ...student.projects];
+                const filledGrades = allGrades.filter(g => g !== '');
+
+                if (filledGrades.length > 0) entered++;
+
+                empty += allGrades.filter(g => g === '').length;
+
+                const avg = calculateStudentAverage(student);
+                if (avg !== null) {
+                    totalAvg += avg;
+                    avgCount++;
+                    if (avg >= 50) passCount++;
+                }
+            });
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statEntered').textContent = entered;
+            document.getElementById('statEmpty').textContent = empty;
+            document.getElementById('statAverage').textContent = avgCount > 0 ? (totalAvg / avgCount).toFixed(1) : '-';
+            document.getElementById('statPass').textContent = avgCount > 0 ? Math.round((passCount / avgCount) * 100) : 0;
+        }
+
+        function copyExamGrades() {
+            let text = '';
+            students.forEach(student => {
+                student.exams.forEach(grade => {
+                    text += (grade || '') + '\t';
+                });
+            });
+            copyToClipboard(text.trim(), 'Yazılı notları kopyalandı!');
+        }
+
+        function copyPerfGrades() {
+            let text = '';
+            students.forEach(student => {
+                student.perfs.forEach(grade => {
+                    text += (grade || '') + '\t';
+                });
+            });
+            copyToClipboard(text.trim(), 'Performans notları kopyalandı!');
+        }
+
+        function copyProjectGrades() {
+            let text = '';
+            students.forEach(student => {
+                student.projects.forEach(grade => {
+                    text += (grade || '') + '\t';
+                });
+            });
+            copyToClipboard(text.trim(), 'Proje notları kopyalandı!');
+        }
+
+        function copyAllGrades() {
+            let text = '';
+            students.forEach(student => {
+                [...student.exams, ...student.perfs, ...student.projects].forEach(grade => {
+                    text += (grade || '') + '\t';
+                });
+            });
+            copyToClipboard(text.trim(), 'Tüm notlar kopyalandı!');
+        }
+
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(() => {
+                showStatus(message, 'success');
+            }).catch(err => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showStatus(message, 'success');
+            });
+        }
+
+        function showStatus(message, type) {
+            const status = document.getElementById('copyStatus');
+            status.textContent = message;
+            status.className = `copy-status ${type} show`;
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 3000);
+        }
+
+        function clearAllGrades() {
+            if (confirm('Tüm notlar silinecek. Emin misiniz?')) {
+                students.forEach(student => {
+                    student.exams = new Array(examCount).fill('');
+                    student.perfs = new Array(perfCount).fill('');
+                    student.projects = new Array(projectCount).fill('');
+                });
+                renderTable();
+                updateStats();
+                showStatus('Tüm notlar temizlendi!', 'success');
+            }
+        }
+
+        function fillRandomGrades() {
+            students.forEach(student => {
+                student.exams = student.exams.map(() => Math.floor(Math.random() * 61) + 40);
+                student.perfs = student.perfs.map(() => Math.floor(Math.random() * 51) + 50);
+                student.projects = student.projects.map(() => Math.floor(Math.random() * 41) + 60);
+            });
+            renderTable();
+            updateStats();
+            showStatus('Rastgele notlar oluşturuldu!', 'success');
+        }
+
+        function showImportModal() {
+            document.getElementById('importModal').classList.add('show');
+            document.getElementById('importArea').focus();
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('show');
+        }
+
+        function showHelpModal() {
+            document.getElementById('helpModal').classList.add('show');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('show');
+        }
+
+        function importStudents() {
+            const text = document.getElementById('importArea').value.trim();
+            if (!text) {
+                showStatus('Lütfen öğrenci listesi yapıştırın!', 'error');
+                return;
+            }
+
+            const lines = text.split('\n').filter(line => line.trim());
+            if (lines.length === 0) {
+                showStatus('Geçerli veri bulunamadı!', 'error');
+                return;
+            }
+
+            students = lines.map((line, idx) => {
+                const parts = line.split('\t');
+                let no, name;
+
+                if (parts.length >= 2) {
+                    no = parseInt(parts[0]) || (idx + 1);
+                    name = parts.slice(1).join(' ').trim() || `Öğrenci ${idx + 1}`;
+                } else {
+                    no = idx + 1;
+                    name = line.trim() || `Öğrenci ${idx + 1}`;
+                }
+
+                return {
+                    no: no,
+                    name: name,
+                    exams: new Array(examCount).fill(''),
+                    perfs: new Array(perfCount).fill(''),
+                    projects: new Array(projectCount).fill('')
+                };
+            });
+
+            document.getElementById('studentCount').value = students.length;
+            renderTable();
+            updateStats();
+            closeImportModal();
+            showStatus(`${students.length} öğrenci içe aktarıldı!`, 'success');
+        }
+
+        // Modal dışına tıklanınca kapat
+        document.getElementById('importModal').addEventListener('click', function(e) {
+            if (e.target === this) closeImportModal();
+        });
+
+        document.getElementById('helpModal').addEventListener('click', function(e) {
+            if (e.target === this) closeHelpModal();
+        });
+
+        // ESC tuşu ile modalları kapat
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImportModal();
+                closeHelpModal();
+            }
+        });
+    </script>
+</body>
+</html>
