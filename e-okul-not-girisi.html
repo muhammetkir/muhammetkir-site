@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Okul Not Girişi Aracı</title>
+    <title>E-Okul Not Girişi - Türkçe Dersi</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -172,30 +172,35 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
         }
 
         th {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 12px 8px;
+            padding: 10px 6px;
             text-align: center;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             position: sticky;
             top: 0;
         }
 
-        th.sortable {
-            cursor: pointer;
-        }
-
-        th.sortable:hover {
+        th.exam-group {
             background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
         }
 
+        th.sub-header {
+            background: #3a6298;
+            font-size: 11px;
+            padding: 6px 4px;
+        }
+
+        th.yazili-header { background: #e74c3c; }
+        th.dinleme-header { background: #3498db; }
+        th.konusma-header { background: #27ae60; }
+
         td {
-            padding: 8px;
+            padding: 6px 4px;
             border-bottom: 1px solid #eee;
             text-align: center;
         }
@@ -213,24 +218,24 @@
         }
 
         .student-number {
-            width: 60px;
+            width: 50px;
             font-weight: 600;
             color: #1e3c72;
         }
 
         .student-name {
             text-align: left;
-            padding-left: 15px;
-            min-width: 180px;
+            padding-left: 10px;
+            min-width: 150px;
         }
 
         .grade-input {
-            width: 55px;
-            padding: 8px 4px;
+            width: 45px;
+            padding: 6px 2px;
             border: 2px solid #e0e0e0;
-            border-radius: 6px;
+            border-radius: 4px;
             text-align: center;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             transition: all 0.2s;
         }
@@ -257,9 +262,13 @@
             border-color: #ffc107;
         }
 
+        .grade-input.yazili { border-left: 3px solid #e74c3c; }
+        .grade-input.dinleme { border-left: 3px solid #3498db; }
+        .grade-input.konusma { border-left: 3px solid #27ae60; }
+
         .average-cell {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .average-5 { color: #28a745; }
@@ -270,14 +279,14 @@
 
         .stats-panel {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
             margin-bottom: 25px;
         }
 
         .stat-card {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 15px;
+            padding: 12px;
             border-radius: 10px;
             text-align: center;
             border: 1px solid #dee2e6;
@@ -290,15 +299,15 @@
         }
 
         .stat-value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             display: block;
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.8;
-            margin-top: 5px;
+            margin-top: 3px;
         }
 
         .actions-panel {
@@ -310,27 +319,28 @@
 
         .actions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
         }
 
         .action-card {
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             border: 1px solid #e0e0e0;
             text-align: center;
         }
 
         .action-card h4 {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #333;
+            font-size: 14px;
         }
 
         .action-card p {
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .copy-status {
@@ -456,6 +466,30 @@
             margin: 0 3px;
         }
 
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .legend-yazili { background: #e74c3c; }
+        .legend-dinleme { background: #3498db; }
+        .legend-konusma { background: #27ae60; }
+
         @media (max-width: 768px) {
             .toolbar {
                 flex-direction: column;
@@ -470,7 +504,12 @@
             }
 
             .header h1 {
-                font-size: 22px;
+                font-size: 20px;
+            }
+
+            .grade-input {
+                width: 38px;
+                font-size: 12px;
             }
         }
 
@@ -487,37 +526,16 @@
             z-index: 100;
         }
 
-        .exam-type-selector {
-            display: flex;
-            gap: 5px;
-        }
-
-        .exam-type-btn {
-            padding: 6px 12px;
-            border: 1px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-
-        .exam-type-btn.active {
-            background: #667eea;
-            color: white;
-        }
-
-        .exam-type-btn:hover:not(.active) {
-            background: #f0f4ff;
+        .exam-header-group {
+            border-left: 2px solid #fff;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>E-Okul Not Girişi Aracı</h1>
-            <p>Hızlı ve kolay not girişi - Tab ile geçiş, otomatik hesaplama, e-okul'a kopyalama</p>
+            <h1>E-Okul Not Girişi - Türkçe Dersi</h1>
+            <p>Yazılı - Dinleme - Konuşma formatında hızlı not girişi | Tab ile geçiş, e-okul'a kopyalama</p>
         </div>
 
         <div class="toolbar">
@@ -537,30 +555,27 @@
             </div>
 
             <div class="toolbar-group">
-                <label>Performans:</label>
-                <select id="perfCount" onchange="generateTable()">
-                    <option value="0">Yok</option>
-                    <option value="1">1 Performans</option>
-                    <option value="2" selected>2 Performans</option>
-                    <option value="3">3 Performans</option>
-                </select>
-            </div>
-
-            <div class="toolbar-group">
-                <label>Proje:</label>
-                <select id="projectCount" onchange="generateTable()">
-                    <option value="0" selected>Yok</option>
-                    <option value="1">1 Proje</option>
-                </select>
-            </div>
-
-            <div class="toolbar-group">
-                <button class="btn btn-info" onclick="showImportModal()">📥 Excel'den Al</button>
-                <button class="btn btn-success" onclick="showHelpModal()">❓ Yardım</button>
+                <button class="btn btn-info" onclick="showImportModal()">Excel'den Al</button>
+                <button class="btn btn-success" onclick="showHelpModal()">Yardım</button>
             </div>
         </div>
 
         <div class="main-content">
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color legend-yazili"></div>
+                    <span>Yazılı</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-dinleme"></div>
+                    <span>Dinleme</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-konusma"></div>
+                    <span>Konuşma</span>
+                </div>
+            </div>
+
             <div class="stats-panel" id="statsPanel">
                 <div class="stat-card highlight">
                     <span class="stat-value" id="statTotal">0</span>
@@ -585,10 +600,10 @@
             </div>
 
             <div class="section-title">
-                <span>📝 Not Giriş Tablosu</span>
+                <span>Not Giriş Tablosu (Yazılı - Dinleme - Konuşma)</span>
                 <div>
-                    <button class="btn btn-secondary" onclick="clearAllGrades()">🗑️ Temizle</button>
-                    <button class="btn btn-warning" onclick="fillRandomGrades()">🎲 Rastgele Doldur</button>
+                    <button class="btn btn-secondary" onclick="clearAllGrades()">Temizle</button>
+                    <button class="btn btn-warning" onclick="fillRandomGrades()">Rastgele Doldur</button>
                 </div>
             </div>
 
@@ -600,32 +615,17 @@
             </div>
 
             <div class="actions-panel">
-                <h3 style="margin-bottom: 15px; color: #333;">📤 E-Okul'a Aktar</h3>
-                <div class="actions-grid">
-                    <div class="action-card">
-                        <h4>1. Yazılı Notları</h4>
-                        <p>Sadece sınav notlarını kopyalar</p>
-                        <button class="btn btn-primary" onclick="copyExamGrades()">Kopyala</button>
-                    </div>
-                    <div class="action-card">
-                        <h4>2. Performans Notları</h4>
-                        <p>Sadece performans notlarını kopyalar</p>
-                        <button class="btn btn-primary" onclick="copyPerfGrades()">Kopyala</button>
-                    </div>
-                    <div class="action-card">
-                        <h4>3. Proje Notları</h4>
-                        <p>Sadece proje notlarını kopyalar</p>
-                        <button class="btn btn-primary" onclick="copyProjectGrades()">Kopyala</button>
-                    </div>
-                    <div class="action-card">
-                        <h4>4. Tüm Notlar</h4>
-                        <p>Tüm notları tek seferde kopyalar</p>
-                        <button class="btn btn-success" onclick="copyAllGrades()">Tümünü Kopyala</button>
-                    </div>
+                <h3 style="margin-bottom: 15px; color: #333;">E-Okul'a Aktar</h3>
+                <p style="margin-bottom: 15px; color: #666; font-size: 13px;">
+                    E-okul'da not girişi sıralaması: <strong>Yazılı → Dinleme → Konuşma</strong> şeklindedir.
+                    Aşağıdaki butonlarla notları kopyalayıp e-okul'a yapıştırabilirsiniz.
+                </p>
+                <div class="actions-grid" id="actionButtons">
+                    <!-- Dinamik olarak doldurulacak -->
                 </div>
 
                 <div style="margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px; border-left: 4px solid #667eea;">
-                    <strong>💡 Kullanım:</strong> Kopyaladıktan sonra e-okul'da ilk not kutusuna tıklayın ve <kbd>Ctrl+V</kbd> ile yapıştırın. Notlar otomatik olarak sırayla yerleşecektir.
+                    <strong>Kullanım:</strong> Kopyaladıktan sonra e-okul'da ilk not kutusuna tıklayın ve <kbd>Ctrl+V</kbd> ile yapıştırın. Notlar otomatik olarak sırayla (Yazılı-Dinleme-Konuşma) yerleşecektir.
                 </div>
             </div>
         </div>
@@ -633,13 +633,13 @@
 
     <div class="copy-status" id="copyStatus"></div>
 
-    <div class="tab-hint">💡 Tab ile sonraki hücreye, Shift+Tab ile önceki hücreye geçin | Enter ile aşağı inin</div>
+    <div class="tab-hint">Tab ile sonraki hücreye | Shift+Tab ile önceki | Enter ile aşağı</div>
 
     <!-- Import Modal -->
     <div class="modal" id="importModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>📥 Excel'den Öğrenci Listesi Al</h3>
+                <h3>Excel'den Öğrenci Listesi Al</h3>
                 <button class="close-btn" onclick="closeImportModal()">&times;</button>
             </div>
             <p style="margin-bottom: 15px; color: #666;">Excel'den kopyaladığınız öğrenci listesini aşağıya yapıştırın. Her satırda "Numara [Tab] Ad Soyad" formatında olmalıdır.</p>
@@ -661,49 +661,46 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
     <div class="modal" id="helpModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>❓ Kullanım Kılavuzu</h3>
+                <h3>Kullanım Kılavuzu</h3>
                 <button class="close-btn" onclick="closeHelpModal()">&times;</button>
             </div>
 
             <div class="help-section">
-                <h4>⌨️ Klavye Kısayolları</h4>
+                <h4>Türkçe Dersi Not Yapısı</h4>
                 <ul>
-                    <li><span class="keyboard-shortcut">Tab</span> Sonraki hücreye geç</li>
+                    <li>Her sınav için 3 not girilir: <strong>Yazılı - Dinleme - Konuşma</strong></li>
+                    <li>E-okul'daki sıralama ile aynıdır</li>
+                    <li>Renkler: <span style="color:#e74c3c">Yazılı (Kırmızı)</span>, <span style="color:#3498db">Dinleme (Mavi)</span>, <span style="color:#27ae60">Konuşma (Yeşil)</span></li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4>Klavye Kısayolları</h4>
+                <ul>
+                    <li><span class="keyboard-shortcut">Tab</span> Sonraki hücreye geç (Yazılı→Dinleme→Konuşma→Yazılı...)</li>
                     <li><span class="keyboard-shortcut">Shift + Tab</span> Önceki hücreye geç</li>
                     <li><span class="keyboard-shortcut">Enter</span> Aşağı hücreye geç</li>
                     <li><span class="keyboard-shortcut">↑ ↓ ← →</span> Ok tuşları ile gezin</li>
-                    <li><span class="keyboard-shortcut">Ctrl + C</span> Seçili alanı kopyala</li>
                 </ul>
             </div>
 
             <div class="help-section">
-                <h4>📝 Not Girişi</h4>
+                <h4>E-Okul'a Aktarma</h4>
+                <ul>
+                    <li>İlgili sınavın "Kopyala" butonuna tıklayın</li>
+                    <li>E-okul'da not girişi sayfasını açın</li>
+                    <li>İlk öğrencinin <strong>Yazılı</strong> kutusuna tıklayın</li>
+                    <li><span class="keyboard-shortcut">Ctrl + V</span> ile yapıştırın</li>
+                    <li>Notlar sırayla yerleşecektir: Yazılı→Dinleme→Konuşma</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4>Not Girişi</h4>
                 <ul>
                     <li>Notlar 0-100 arasında olmalıdır</li>
-                    <li>Boş bırakılan notlar sarı renkte görünür</li>
-                    <li>Geçersiz notlar kırmızı renkte görünür</li>
+                    <li>Boş notlar sarı, geçersiz notlar kırmızı görünür</li>
                     <li>Ortalama otomatik hesaplanır</li>
-                </ul>
-            </div>
-
-            <div class="help-section">
-                <h4>📤 E-Okul'a Aktarma</h4>
-                <ul>
-                    <li>İstediğiniz not türünü "Kopyala" butonuyla kopyalayın</li>
-                    <li>E-okul'da ilgili not girişi sayfasını açın</li>
-                    <li>İlk öğrencinin not kutusuna tıklayın</li>
-                    <li><span class="keyboard-shortcut">Ctrl + V</span> ile yapıştırın</li>
-                    <li>Notlar otomatik olarak Tab ile sıralanacaktır</li>
-                </ul>
-            </div>
-
-            <div class="help-section">
-                <h4>📥 Excel'den Alma</h4>
-                <ul>
-                    <li>Excel'de öğrenci numarası ve adı sütunlarını seçin</li>
-                    <li><span class="keyboard-shortcut">Ctrl + C</span> ile kopyalayın</li>
-                    <li>"Excel'den Al" butonuna tıklayın</li>
-                    <li>Açılan alana yapıştırın ve "İçe Aktar"a tıklayın</li>
                 </ul>
             </div>
         </div>
@@ -712,8 +709,6 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
     <script>
         let students = [];
         let examCount = 2;
-        let perfCount = 2;
-        let projectCount = 0;
 
         // Sayfa yüklendiğinde tablo oluştur
         document.addEventListener('DOMContentLoaded', function() {
@@ -723,24 +718,38 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
         function generateTable() {
             const studentCount = parseInt(document.getElementById('studentCount').value) || 30;
             examCount = parseInt(document.getElementById('examCount').value);
-            perfCount = parseInt(document.getElementById('perfCount').value);
-            projectCount = parseInt(document.getElementById('projectCount').value);
 
-            // Öğrenci listesi oluştur (eğer boşsa)
+            // Öğrenci listesi oluştur (eğer boşsa veya sayı değiştiyse)
             if (students.length === 0 || students.length !== studentCount) {
                 students = [];
                 for (let i = 1; i <= studentCount; i++) {
                     students.push({
                         no: i,
                         name: `Öğrenci ${i}`,
-                        exams: new Array(examCount).fill(''),
-                        perfs: new Array(perfCount).fill(''),
-                        projects: new Array(projectCount).fill('')
+                        exams: [] // Her sınav için {yazili, dinleme, konusma}
                     });
+                    for (let j = 0; j < examCount; j++) {
+                        students[i-1].exams.push({
+                            yazili: '',
+                            dinleme: '',
+                            konusma: ''
+                        });
+                    }
                 }
+            } else {
+                // Sınav sayısı değiştiyse güncelle
+                students.forEach(student => {
+                    while (student.exams.length < examCount) {
+                        student.exams.push({ yazili: '', dinleme: '', konusma: '' });
+                    }
+                    while (student.exams.length > examCount) {
+                        student.exams.pop();
+                    }
+                });
             }
 
             renderTable();
+            renderActionButtons();
             updateStats();
         }
 
@@ -748,19 +757,23 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
             const thead = document.getElementById('tableHead');
             const tbody = document.getElementById('tableBody');
 
-            // Header oluştur
-            let headerHTML = '<tr><th style="width:60px">No</th><th style="text-align:left; padding-left:15px;">Öğrenci Adı</th>';
+            // Header oluştur - İki satırlı
+            let headerHTML = '<tr><th rowspan="2" style="width:50px">No</th><th rowspan="2" style="text-align:left; padding-left:10px;">Öğrenci Adı</th>';
 
             for (let i = 1; i <= examCount; i++) {
-                headerHTML += `<th>Yazılı ${i}</th>`;
+                headerHTML += `<th colspan="3" class="exam-header-group">${i}. Sınav</th>`;
             }
-            for (let i = 1; i <= perfCount; i++) {
-                headerHTML += `<th>Perf. ${i}</th>`;
+            headerHTML += '<th rowspan="2">Ort.</th></tr>';
+
+            // Alt başlıklar
+            headerHTML += '<tr>';
+            for (let i = 0; i < examCount; i++) {
+                headerHTML += `<th class="sub-header yazili-header">Yazılı</th>`;
+                headerHTML += `<th class="sub-header dinleme-header">Dinleme</th>`;
+                headerHTML += `<th class="sub-header konusma-header">Konuşma</th>`;
             }
-            for (let i = 1; i <= projectCount; i++) {
-                headerHTML += `<th>Proje ${i}</th>`;
-            }
-            headerHTML += '<th>Ortalama</th></tr>';
+            headerHTML += '</tr>';
+
             thead.innerHTML = headerHTML;
 
             // Body oluştur
@@ -771,46 +784,39 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
                     <td class="student-name">
                         <input type="text" value="${student.name}"
                                onchange="updateStudentName(${idx}, this.value)"
-                               style="width:100%; border:none; background:transparent; padding:5px;">
+                               style="width:100%; border:none; background:transparent; padding:5px; font-size:13px;">
                     </td>`;
 
-                // Sınav notları
-                for (let i = 0; i < examCount; i++) {
-                    const value = student.exams[i] || '';
-                    const className = getInputClass(value);
+                // Her sınav için 3 not
+                for (let examIdx = 0; examIdx < examCount; examIdx++) {
+                    const exam = student.exams[examIdx];
+
+                    // Yazılı
                     bodyHTML += `<td>
-                        <input type="text" class="grade-input ${className}"
-                               value="${value}"
-                               data-student="${idx}" data-type="exam" data-index="${i}"
-                               onchange="updateGrade(${idx}, 'exam', ${i}, this.value)"
+                        <input type="text" class="grade-input yazili ${getInputClass(exam.yazili)}"
+                               value="${exam.yazili}"
+                               data-student="${idx}" data-exam="${examIdx}" data-type="yazili"
+                               onchange="updateGrade(${idx}, ${examIdx}, 'yazili', this.value)"
                                onkeydown="handleKeydown(event, this)"
                                onfocus="this.select()">
                     </td>`;
-                }
 
-                // Performans notları
-                for (let i = 0; i < perfCount; i++) {
-                    const value = student.perfs[i] || '';
-                    const className = getInputClass(value);
+                    // Dinleme
                     bodyHTML += `<td>
-                        <input type="text" class="grade-input ${className}"
-                               value="${value}"
-                               data-student="${idx}" data-type="perf" data-index="${i}"
-                               onchange="updateGrade(${idx}, 'perf', ${i}, this.value)"
+                        <input type="text" class="grade-input dinleme ${getInputClass(exam.dinleme)}"
+                               value="${exam.dinleme}"
+                               data-student="${idx}" data-exam="${examIdx}" data-type="dinleme"
+                               onchange="updateGrade(${idx}, ${examIdx}, 'dinleme', this.value)"
                                onkeydown="handleKeydown(event, this)"
                                onfocus="this.select()">
                     </td>`;
-                }
 
-                // Proje notları
-                for (let i = 0; i < projectCount; i++) {
-                    const value = student.projects[i] || '';
-                    const className = getInputClass(value);
+                    // Konuşma
                     bodyHTML += `<td>
-                        <input type="text" class="grade-input ${className}"
-                               value="${value}"
-                               data-student="${idx}" data-type="project" data-index="${i}"
-                               onchange="updateGrade(${idx}, 'project', ${i}, this.value)"
+                        <input type="text" class="grade-input konusma ${getInputClass(exam.konusma)}"
+                               value="${exam.konusma}"
+                               data-student="${idx}" data-exam="${examIdx}" data-type="konusma"
+                               onchange="updateGrade(${idx}, ${examIdx}, 'konusma', this.value)"
                                onkeydown="handleKeydown(event, this)"
                                onfocus="this.select()">
                     </td>`;
@@ -823,6 +829,31 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
             });
 
             tbody.innerHTML = bodyHTML;
+        }
+
+        function renderActionButtons() {
+            const container = document.getElementById('actionButtons');
+            let html = '';
+
+            for (let i = 1; i <= examCount; i++) {
+                html += `
+                    <div class="action-card">
+                        <h4>${i}. Sınav Notları</h4>
+                        <p>Yazılı-Dinleme-Konuşma sırasıyla</p>
+                        <button class="btn btn-primary" onclick="copyExamGrades(${i-1})">Kopyala</button>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="action-card">
+                    <h4>Tüm Sınavlar</h4>
+                    <p>Tüm notları tek seferde</p>
+                    <button class="btn btn-success" onclick="copyAllGrades()">Tümünü Kopyala</button>
+                </div>
+            `;
+
+            container.innerHTML = html;
         }
 
         function getInputClass(value) {
@@ -845,7 +876,7 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
             students[idx].name = name;
         }
 
-        function updateGrade(studentIdx, type, gradeIdx, value) {
+        function updateGrade(studentIdx, examIdx, type, value) {
             // Değeri temizle
             value = value.trim();
 
@@ -858,13 +889,7 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
             }
 
             // Kaydet
-            if (type === 'exam') {
-                students[studentIdx].exams[gradeIdx] = value;
-            } else if (type === 'perf') {
-                students[studentIdx].perfs[gradeIdx] = value;
-            } else if (type === 'project') {
-                students[studentIdx].projects[gradeIdx] = value;
-            }
+            students[studentIdx].exams[examIdx][type] = value;
 
             // Tabloyu güncelle
             renderTable();
@@ -874,7 +899,7 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
         function handleKeydown(event, input) {
             const allInputs = Array.from(document.querySelectorAll('.grade-input'));
             const currentIndex = allInputs.indexOf(input);
-            const colCount = examCount + perfCount + projectCount;
+            const colCount = examCount * 3; // Her sınav için 3 sütun
 
             if (event.key === 'Enter') {
                 event.preventDefault();
@@ -911,21 +936,15 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
         function calculateStudentAverage(student) {
             let allGrades = [];
 
-            student.exams.forEach(g => {
-                if (g !== '' && !isNaN(parseFloat(g))) {
-                    allGrades.push(parseFloat(g));
+            student.exams.forEach(exam => {
+                if (exam.yazili !== '' && !isNaN(parseFloat(exam.yazili))) {
+                    allGrades.push(parseFloat(exam.yazili));
                 }
-            });
-
-            student.perfs.forEach(g => {
-                if (g !== '' && !isNaN(parseFloat(g))) {
-                    allGrades.push(parseFloat(g));
+                if (exam.dinleme !== '' && !isNaN(parseFloat(exam.dinleme))) {
+                    allGrades.push(parseFloat(exam.dinleme));
                 }
-            });
-
-            student.projects.forEach(g => {
-                if (g !== '' && !isNaN(parseFloat(g))) {
-                    allGrades.push(parseFloat(g));
+                if (exam.konusma !== '' && !isNaN(parseFloat(exam.konusma))) {
+                    allGrades.push(parseFloat(exam.konusma));
                 }
             });
 
@@ -943,12 +962,17 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
             let passCount = 0;
 
             students.forEach(student => {
-                const allGrades = [...student.exams, ...student.perfs, ...student.projects];
-                const filledGrades = allGrades.filter(g => g !== '');
+                let hasAnyGrade = false;
+                student.exams.forEach(exam => {
+                    if (exam.yazili !== '') hasAnyGrade = true;
+                    else empty++;
+                    if (exam.dinleme !== '') hasAnyGrade = true;
+                    else empty++;
+                    if (exam.konusma !== '') hasAnyGrade = true;
+                    else empty++;
+                });
 
-                if (filledGrades.length > 0) entered++;
-
-                empty += allGrades.filter(g => g === '').length;
+                if (hasAnyGrade) entered++;
 
                 const avg = calculateStudentAverage(student);
                 if (avg !== null) {
@@ -965,41 +989,25 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
             document.getElementById('statPass').textContent = avgCount > 0 ? Math.round((passCount / avgCount) * 100) : 0;
         }
 
-        function copyExamGrades() {
+        function copyExamGrades(examIdx) {
+            // E-okul sıralaması: Her öğrenci için Yazılı-Dinleme-Konuşma
             let text = '';
             students.forEach(student => {
-                student.exams.forEach(grade => {
-                    text += (grade || '') + '\t';
-                });
+                const exam = student.exams[examIdx];
+                text += (exam.yazili || '') + '\t';
+                text += (exam.dinleme || '') + '\t';
+                text += (exam.konusma || '') + '\t';
             });
-            copyToClipboard(text.trim(), 'Yazılı notları kopyalandı!');
-        }
-
-        function copyPerfGrades() {
-            let text = '';
-            students.forEach(student => {
-                student.perfs.forEach(grade => {
-                    text += (grade || '') + '\t';
-                });
-            });
-            copyToClipboard(text.trim(), 'Performans notları kopyalandı!');
-        }
-
-        function copyProjectGrades() {
-            let text = '';
-            students.forEach(student => {
-                student.projects.forEach(grade => {
-                    text += (grade || '') + '\t';
-                });
-            });
-            copyToClipboard(text.trim(), 'Proje notları kopyalandı!');
+            copyToClipboard(text.trim(), `${examIdx + 1}. sınav notları kopyalandı!`);
         }
 
         function copyAllGrades() {
             let text = '';
             students.forEach(student => {
-                [...student.exams, ...student.perfs, ...student.projects].forEach(grade => {
-                    text += (grade || '') + '\t';
+                student.exams.forEach(exam => {
+                    text += (exam.yazili || '') + '\t';
+                    text += (exam.dinleme || '') + '\t';
+                    text += (exam.konusma || '') + '\t';
                 });
             });
             copyToClipboard(text.trim(), 'Tüm notlar kopyalandı!');
@@ -1032,9 +1040,11 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
         function clearAllGrades() {
             if (confirm('Tüm notlar silinecek. Emin misiniz?')) {
                 students.forEach(student => {
-                    student.exams = new Array(examCount).fill('');
-                    student.perfs = new Array(perfCount).fill('');
-                    student.projects = new Array(projectCount).fill('');
+                    student.exams.forEach(exam => {
+                        exam.yazili = '';
+                        exam.dinleme = '';
+                        exam.konusma = '';
+                    });
                 });
                 renderTable();
                 updateStats();
@@ -1044,9 +1054,11 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
 
         function fillRandomGrades() {
             students.forEach(student => {
-                student.exams = student.exams.map(() => Math.floor(Math.random() * 61) + 40);
-                student.perfs = student.perfs.map(() => Math.floor(Math.random() * 51) + 50);
-                student.projects = student.projects.map(() => Math.floor(Math.random() * 41) + 60);
+                student.exams.forEach(exam => {
+                    exam.yazili = Math.floor(Math.random() * 61) + 40;
+                    exam.dinleme = Math.floor(Math.random() * 51) + 50;
+                    exam.konusma = Math.floor(Math.random() * 41) + 60;
+                });
             });
             renderTable();
             updateStats();
@@ -1095,12 +1107,15 @@ Excel'den kopyalayıp buraya yapıştırın..."></textarea>
                     name = line.trim() || `Öğrenci ${idx + 1}`;
                 }
 
+                const exams = [];
+                for (let j = 0; j < examCount; j++) {
+                    exams.push({ yazili: '', dinleme: '', konusma: '' });
+                }
+
                 return {
                     no: no,
                     name: name,
-                    exams: new Array(examCount).fill(''),
-                    perfs: new Array(perfCount).fill(''),
-                    projects: new Array(projectCount).fill('')
+                    exams: exams
                 };
             });
 
